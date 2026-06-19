@@ -7,4 +7,5 @@ while True:
 
     print(f"X: {x} Y: {y} RGB: {color}")
 
+
     time.sleep(0.5)
