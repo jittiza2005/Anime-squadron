@@ -4,9 +4,13 @@ import pyautogui as pag
 import keyboard as key
 from datetime import date, datetime
 
-LAST_DONE_FILE = "last_done.txt"
-AIZEN_STATE_FILE = "aizen_state.txt"
-SHENRON_STATE_FILE = "shenron_state.txt"
+SAVE_FOLDER = "save_data"
+
+os.makedirs(SAVE_FOLDER, exist_ok=True)
+
+LAST_DONE_FILE = os.path.join(SAVE_FOLDER, "last_done.txt")
+AIZEN_STATE_FILE = os.path.join(SAVE_FOLDER, "aizen_state.txt")
+SHENRON_STATE_FILE = os.path.join(SAVE_FOLDER, "shenron_state.txt")
 
 
 def check_stop():
@@ -92,7 +96,7 @@ def save_count_state(state_file, day_text, count_number):
 
 def daily_macro():
     safe_sleep(1)
-    wait_for_pixels(pixel1=(1024, 462, 0, 51, 20))  # check for home screen
+    wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # check for home screen
     safe_sleep(0.3)
     pag.moveTo(1001, 291, duration=0.2)  # click play
     safe_sleep(0.1)
