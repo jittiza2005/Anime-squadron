@@ -106,36 +106,66 @@ def save_count_state(state_file, day_text, count_number):
         file.write(f"date={day_text}\n")
         file.write(f"count={count_number}")
 
+def open_type_selection():
+    wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # home screen
+    safe_sleep(0.3)
+
+    direct_click(1001, 291, clicks=1)  # play
+    direct_click(1001, 293, clicks=1)
+
+    wait_for_pixels(pixel1=(1419, 493, 34, 157, 0))  # create room
+    safe_sleep(0.3)
+
+    direct_click(1443, 502, clicks=1)
+    direct_click(1442, 501, clicks=1)
+
+    wait_for_pixels(pixel1=(1590, 155, 255, 255, 255))  # type selection
+
+def open_challenge():
+    direct_click(1525, 508, clicks=1) # move to challenge
+    direct_click(1524, 506, clicks=1)
+
+    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255)) # wait for challenge selection
+
+def open_raid():
+    direct_click(1664, 500, clicks=1) # move to raid
+    direct_click(1662, 500, clicks=1)
+
+    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255)) # wait for raid selection
+
+def create_room():
+    direct_click(1584, 438, clicks=1)  # move to create room
+    direct_click(1582, 438, clicks=1)
+
+def start_room():
+    direct_click(1706, 452, clicks=1)  # move to start
+    direct_click(1704, 452, clicks=1)
+
 
 def daily_macro():
     safe_sleep(1)
-    wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # check for home screen
+    open_type_selection() # room type selection
     safe_sleep(0.3)
-    direct_click(1001, 291, clicks=1)  # click play
-    direct_click(1001, 293, clicks=1)
-    wait_for_pixels(pixel1=(1419, 493, 34, 157, 0))  # wait for create room
+
+    open_challenge() # open challenge
     safe_sleep(0.3)
-    direct_click(1443, 502, clicks=1)  # move to create room
-    direct_click(1442, 501, clicks=1)
-    wait_for_pixels(pixel1=(1590, 155, 255, 255, 255))  # wait for type selection
-    safe_sleep(0.3)
-    direct_click(1525, 508, clicks=1)  # move to challenge
-    direct_click(1524, 506, clicks=1)
-    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255))  # wait for challenge selection
-    safe_sleep(0.3)
+
     direct_click(1267, 218, clicks=1)  # move to daily challenge
     direct_click(1265, 218, clicks=1)
+
     safe_sleep(0.2)
-    direct_click(1584, 438, clicks=1)  # move to create room
-    direct_click(1582, 438, clicks=1)
+    create_room() # move to create room
     safe_sleep(0.2)
-    direct_click(1706, 452, clicks=1)  # move to start
-    direct_click(1704, 452, clicks=1)
+
+    start_room() # move to start
+
     safe_sleep(10)
     wait_for_pixels(pixel1=(1350, 450, 132, 134, 0))  # wait for victory screen
-    safe_sleep(0.5)
+    safe_sleep(0.3)
+
     direct_click(1483, 445, clicks=1)  # move to leave
     direct_click(1482, 445, clicks=1)
+
     safe_sleep(0.1)
     print("daily macro done")
 
@@ -147,28 +177,20 @@ def aizen_setup():
     # This only runs once before the Aizen loop starts.
 
     safe_sleep(1)
-    wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # check for home screen
+    open_type_selection()  # room type selection
     safe_sleep(0.3)
-    direct_click(1001, 291, clicks=1)  # click play
-    direct_click(1001, 293, clicks=1)
-    wait_for_pixels(pixel1=(1419, 493, 34, 157, 0))  # wait for create room
+
+    open_challenge() # open challenge
     safe_sleep(0.3)
-    direct_click(1443, 502, clicks=1)  # move to create room
-    direct_click(1442, 501, clicks=1)
-    wait_for_pixels(pixel1=(1590, 155, 255, 255, 255))  # wait for type selection
-    safe_sleep(0.3)
-    direct_click(1525, 508, clicks=1)  # move to challenge
-    direct_click(1524, 506, clicks=1)
-    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255))  # wait for challenge selection
-    safe_sleep(0.3)
+
     direct_click(1264, 325, clicks=1)  # move to aizen challenge
     direct_click(1262, 325, clicks=1)
+
     safe_sleep(0.2)
-    direct_click(1584, 438, clicks=1)  # move to create room
-    direct_click(1582, 438, clicks=1)
+    create_room()  # move to create room
     safe_sleep(0.2)
-    direct_click(1706, 452, clicks=1)  # move to start
-    direct_click(1704, 452, clicks=1)
+
+    start_room()  # move to start
 
     print("Aizen setup done")
 
@@ -208,6 +230,7 @@ def aizen_100_macro():
 
         direct_click(1351, 450, clicks=1)  # move to replay
         direct_click(1350, 450, clicks=1)
+
         safe_sleep(0.1)
 
     print("Aizen trait shard reached 100 today")
@@ -220,34 +243,31 @@ def shenron_setup():
     # This only runs once before the Shenron loop starts.
 
     safe_sleep(1)
-    wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # check for home screen
+    open_type_selection()  # room type selection
     safe_sleep(0.3)
-    direct_click(1001, 291, clicks=1)  # click play
-    direct_click(1001, 293, clicks=1)
-    wait_for_pixels(pixel1=(1419, 493, 34, 157, 0))  # wait for create room
+
+    open_raid() # open raid
     safe_sleep(0.3)
-    direct_click(1443, 502, clicks=1)  # move to create room
-    direct_click(1442, 501, clicks=1)
-    wait_for_pixels(pixel1=(1590, 155, 255, 255, 255))  # wait for type selection
-    safe_sleep(0.3)
-    direct_click(1664, 500, clicks=1)  # move to raid
-    direct_click(1662, 500, clicks=1)
-    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255))  # wait for raid selection
-    safe_sleep(0.3)
+
     direct_click(1267, 218, clicks=1)  # move to gt city
     direct_click(1265, 218, clicks=1)
+
     safe_sleep(0.2)
+
     direct_click(1447, 294, clicks=1)  # move to select act 4
     direct_click(1445, 294, clicks=1)
+
     safe_sleep(0.3)
+
     direct_click(1644, 334, clicks=1)  # move to select hard
     direct_click(1643, 334, clicks=1)
-    safe_sleep(0.3)
-    direct_click(1584, 438, clicks=1)  # move to create room
-    direct_click(1582, 438, clicks=1)
+
     safe_sleep(0.2)
-    direct_click(1706, 452, clicks=1)  # move to start
-    direct_click(1704, 452, clicks=1)
+    create_room()  # move to create room
+    safe_sleep(0.2)
+
+    start_room()  # move to start
+
 
     print("Shenron setup done")
 
