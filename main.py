@@ -3,6 +3,7 @@ import time
 import pyautogui as pag
 import keyboard as key
 from datetime import date, datetime
+import pydirectinput
 
 SAVE_FOLDER = "save_data"
 
@@ -27,14 +28,26 @@ def safe_sleep(seconds):
         remaining = end_time - time.time()
         time.sleep(min(0.05, remaining))
 
+pydirectinput.PAUSE = 0.05
 
-def wait_for_pixels(pixel1=(0, 0, 255, 255, 255)):
+
+def direct_click(x, y, clicks=1):
+    pydirectinput.moveTo(x, y, duration=0.2)
+    safe_sleep(0.15)
+
+    for _ in range(clicks):
+        pydirectinput.mouseDown()
+        safe_sleep(0.12)
+        pydirectinput.mouseUp()
+        safe_sleep(0.15)
+
+def wait_for_pixels(pixel1=(0, 0, 255, 255, 255), tolerance=20):
     x, y, r, g, b = pixel1
 
     while True:
         check_stop()
 
-        if pag.pixelMatchesColor(x, y, (r, g, b)):
+        if pag.pixelMatchesColor(x, y, (r, g, b), tolerance=tolerance):
             return True
 
         time.sleep(0.2)
@@ -98,36 +111,32 @@ def daily_macro():
     safe_sleep(1)
     wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # check for home screen
     safe_sleep(0.3)
-    pag.moveTo(1001, 291, duration=0.2)  # click play
-    safe_sleep(0.1)
-    pag.click()
+    direct_click(1001, 291, clicks=1)  # click play
+    direct_click(1001, 293, clicks=1)
     wait_for_pixels(pixel1=(1419, 493, 34, 157, 0))  # wait for create room
     safe_sleep(0.3)
-    pag.moveTo(1443, 501, duration=0.2)  # move to create room
-    safe_sleep(0.1)
-    pag.click()
-    wait_for_pixels(pixel1=(1576, 432, 40, 188, 0))  # wait for type selection
+    direct_click(1443, 502, clicks=1)  # move to create room
+    direct_click(1442, 501, clicks=1)
+    wait_for_pixels(pixel1=(1590, 155, 255, 255, 255))  # wait for type selection
     safe_sleep(0.3)
-    pag.moveTo(1525, 500, duration=0.2)  # move to challenge
-    safe_sleep(0.1)
-    pag.click()
-    wait_for_pixels(pixel1=(1186, 406, 25, 97, 21))  # wait for challenge selection
+    direct_click(1525, 508, clicks=1)  # move to challenge
+    direct_click(1524, 506, clicks=1)
+    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255))  # wait for challenge selection
     safe_sleep(0.3)
-    pag.moveTo(1313, 218, duration=0.2)  # move to daily challenge
-    safe_sleep(0.1)
-    pag.click()
-    pag.moveTo(1579, 437, duration=0.2)  # move to create room
-    safe_sleep(0.1)
-    pag.click()
-    pag.moveTo(1707, 447, duration=0.2)  # move to start
-    safe_sleep(0.1)
-    pag.click()
+    direct_click(1267, 218, clicks=1)  # move to daily challenge
+    direct_click(1265, 218, clicks=1)
+    safe_sleep(0.2)
+    direct_click(1584, 438, clicks=1)  # move to create room
+    direct_click(1582, 438, clicks=1)
+    safe_sleep(0.2)
+    direct_click(1706, 452, clicks=1)  # move to start
+    direct_click(1704, 452, clicks=1)
     safe_sleep(10)
     wait_for_pixels(pixel1=(1350, 450, 132, 134, 0))  # wait for victory screen
     safe_sleep(0.5)
-    pag.moveTo(1483, 445, duration=0.2)  # move to leave
+    direct_click(1483, 445, clicks=1)  # move to leave
+    direct_click(1482, 445, clicks=1)
     safe_sleep(0.1)
-    pag.click()
     print("daily macro done")
 
 
@@ -138,32 +147,28 @@ def aizen_setup():
     # This only runs once before the Aizen loop starts.
 
     safe_sleep(1)
-    wait_for_pixels(pixel1=(1024, 462, 0, 51, 20))  # check for home screen
+    wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # check for home screen
     safe_sleep(0.3)
-    pag.moveTo(1001, 291, duration=0.2)  # click play
-    safe_sleep(0.1)
-    pag.click()
+    direct_click(1001, 291, clicks=1)  # click play
+    direct_click(1001, 293, clicks=1)
     wait_for_pixels(pixel1=(1419, 493, 34, 157, 0))  # wait for create room
     safe_sleep(0.3)
-    pag.moveTo(1443, 501, duration=0.2)  # move to create room
-    safe_sleep(0.1)
-    pag.click()
-    wait_for_pixels(pixel1=(1576, 432, 40, 188, 0))  # wait for type selection
+    direct_click(1443, 502, clicks=1)  # move to create room
+    direct_click(1442, 501, clicks=1)
+    wait_for_pixels(pixel1=(1590, 155, 255, 255, 255))  # wait for type selection
     safe_sleep(0.3)
-    pag.moveTo(1525, 500, duration=0.2)  # move to challenge
-    safe_sleep(0.1)
-    pag.click()
-    wait_for_pixels(pixel1=(1186, 406, 25, 97, 21))  # wait for challenge selection
+    direct_click(1525, 508, clicks=1)  # move to challenge
+    direct_click(1524, 506, clicks=1)
+    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255))  # wait for challenge selection
     safe_sleep(0.3)
-    pag.moveTo(1268, 332, duration=0.2)  # move to aizen challenge
-    safe_sleep(0.1)
-    pag.click()
-    pag.moveTo(1579, 437, duration=0.2)  # move to create room
-    safe_sleep(0.1)
-    pag.click()
-    pag.moveTo(1707, 447, duration=0.2)  # move to start
-    safe_sleep(0.1)
-    pag.click()
+    direct_click(1264, 325, clicks=1)  # move to aizen challenge
+    direct_click(1262, 325, clicks=1)
+    safe_sleep(0.2)
+    direct_click(1584, 438, clicks=1)  # move to create room
+    direct_click(1582, 438, clicks=1)
+    safe_sleep(0.2)
+    direct_click(1706, 452, clicks=1)  # move to start
+    direct_click(1704, 452, clicks=1)
 
     print("Aizen setup done")
 
@@ -175,16 +180,12 @@ def aizen_one_round():
 
     wait_for_pixels(pixel1=(1351, 450, 132, 134, 0))  # wait for victory screen
 
-    safe_sleep(0.5)
+    safe_sleep(0.3)
 
     found = check_for_pixels(
         pixel1=(1334, 415, 252, 163, 0),
         timeout=5
     )  # check if Aizen trait shard appeared
-
-    pag.moveTo(1351, 450, duration=0.2)  # move to replay
-    safe_sleep(0.1)
-    pag.click()
 
     return found
 
@@ -205,6 +206,10 @@ def aizen_100_macro():
         else:
             print("Aizen trait shard not found, restarting round")
 
+        direct_click(1351, 450, clicks=1)  # move to replay
+        direct_click(1350, 450, clicks=1)
+        safe_sleep(0.1)
+
     print("Aizen trait shard reached 100 today")
 
 
@@ -213,6 +218,36 @@ def shenron_setup():
 
     # Put home screen -> start Shenron game code here.
     # This only runs once before the Shenron loop starts.
+
+    safe_sleep(1)
+    wait_for_pixels(pixel1=(1024, 462, 0, 46, 18))  # check for home screen
+    safe_sleep(0.3)
+    direct_click(1001, 291, clicks=1)  # click play
+    direct_click(1001, 293, clicks=1)
+    wait_for_pixels(pixel1=(1419, 493, 34, 157, 0))  # wait for create room
+    safe_sleep(0.3)
+    direct_click(1443, 502, clicks=1)  # move to create room
+    direct_click(1442, 501, clicks=1)
+    wait_for_pixels(pixel1=(1590, 155, 255, 255, 255))  # wait for type selection
+    safe_sleep(0.3)
+    direct_click(1664, 500, clicks=1)  # move to raid
+    direct_click(1662, 500, clicks=1)
+    wait_for_pixels(pixel1=(1589, 151, 255, 255, 255))  # wait for raid selection
+    safe_sleep(0.3)
+    direct_click(1267, 218, clicks=1)  # move to gt city
+    direct_click(1265, 218, clicks=1)
+    safe_sleep(0.2)
+    direct_click(1447, 294, clicks=1)  # move to select act 4
+    direct_click(1445, 294, clicks=1)
+    safe_sleep(0.3)
+    direct_click(1644, 334, clicks=1)  # move to select hard
+    direct_click(1643, 334, clicks=1)
+    safe_sleep(0.3)
+    direct_click(1584, 438, clicks=1)  # move to create room
+    direct_click(1582, 438, clicks=1)
+    safe_sleep(0.2)
+    direct_click(1706, 452, clicks=1)  # move to start
+    direct_click(1704, 452, clicks=1)
 
     print("Shenron setup done")
 
@@ -223,9 +258,18 @@ def shenron_one_round():
     # Put only the repeating Shenron round code here.
     # This is the part that loops after the game is already running.
 
-    # After the round ends, check if Shenron trait shard appeared.
-    return check_for_pixels(pixel1=(0, 0, 255, 255, 255), timeout=5)
+    safe_sleep(10)
 
+    wait_for_pixels(pixel1=(1351, 450, 132, 134, 0))  # wait for victory screen
+
+    safe_sleep(0.3)
+
+    found = check_for_pixels(
+        pixel1=(1260, 415, 255, 172, 0),
+        timeout=5
+    ) # check if shenron trait shard appeared
+
+    return found
 
 def shenron_100_macro():
     state_day, detect_count = load_count_state(SHENRON_STATE_FILE)
@@ -243,6 +287,10 @@ def shenron_100_macro():
             print(f"Shenron trait shard detected {detect_count}/100")
         else:
             print("Shenron trait shard not found, restarting round")
+
+        direct_click(1351, 450, clicks=1)  # move to replay
+        direct_click(1350, 450, clicks=1)
+        safe_sleep(0.1)
 
     print("Shenron trait shard reached 100 today")
 
