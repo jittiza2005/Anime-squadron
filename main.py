@@ -314,11 +314,54 @@ def shenron_100_macro():
 
     print("Shenron trait shard reached 100 today")
 
+def regular_challenge_setup():
+    print("Regular challenge setup")
+
+    safe_sleep(1)
+    open_type_selection()
+    safe_sleep(0.3)
+
+    open_challenge()
+    safe_sleep(0.3)
+
+    direct_click(1270, 279, clicks=1)
+    direct_click(1269, 279, clicks=1)
+
+    safe_sleep(0.2)
+    create_room()
+    safe_sleep(0.2)
+
+    start_room()
+
+
+def regular_challenge_one_round():
+    print("Regular challenge round")
+
+    safe_sleep(10)
+
+    wait_for_pixels(pixel1=(1351, 450, 132, 134, 0))
+
+    safe_sleep(0.3)
+
+    direct_click(1351, 450, clicks=1)  # replay
+    direct_click(1350, 450, clicks=1)
+
+    safe_sleep(0.1)
 
 def thirty_min_macro():
     print("30 minute macro")
     # your 30-minute code here
 
+    safe_sleep(5)
+
+    wait_for_pixels(pixel1=(1351, 450, 132, 134, 0))
+
+    safe_sleep(0.3)
+
+    direct_click(1485, 450, clicks=1)  # leave
+    direct_click(1483, 450, clicks=1)
+
+    safe_sleep(0.1)
 
 while True:
     check_stop()
@@ -349,15 +392,22 @@ while True:
 
     last_30_min_run = None
 
+    regular_challenge_setup()
+
     while get_today_text() == today_text:
         check_stop()
 
+        regular_challenge_one_round()
+
         now = datetime.now()
+
         current_slot = now.strftime("%Y-%m-%d %H:%M")
 
         if now.minute in (0, 30):
+
             if last_30_min_run != current_slot:
                 thirty_min_macro()
-                last_30_min_run = current_slot
 
-        safe_sleep(1)
+                regular_challenge_setup()
+
+                last_30_min_run = current_slot
