@@ -93,7 +93,14 @@ def check_for_any_pixels(pixels, timeout=5):
 
 
 def get_today_text():
-    return date.today().isoformat()
+    current_time = datetime.now()
+
+    if current_time.hour >= 17:
+        return current_time.date().isoformat()
+
+    yesterday = date.fromordinal(current_time.date().toordinal() - 1)
+
+    return yesterday.isoformat()
 
 
 def read_last_done_day():
@@ -119,7 +126,7 @@ def load_count_state(state_file):
         lines = file.readlines()
 
     stored_day = lines[0].split("=")[1].strip()
-    stored_count = int(lines[1].split("=")[1].strip())
+    stored_count = float(lines[1].split("=")[1].strip())
 
     if stored_day != current_day:
         return current_day, 0
@@ -172,6 +179,22 @@ def start_room():
     direct_click(1706, 452, clicks=1)  # move to start
     direct_click(1704, 452, clicks=1)
 
+def leave_setup_to_home():
+    print("Leaving setup to home")
+
+    # replace these with your actual buttons
+    wait_for_pixels(pixel1=(1506, 512, 0, 134, 0)) # wait for game to load
+
+    safe_sleep(0.2)
+    direct_click(1883, 589, clicks=1) # move to setting
+    direct_click(1882, 589, clicks=1)
+
+    wait_for_pixels(pixel1=(1205, 171, 255, 255, 255))  # wait for setting menu
+
+    direct_click(1595, 268, clicks=1)  # move to teleport
+    direct_click(1594, 268, clicks=1)
+
+    safe_sleep(1)
 
 def daily_macro():
     safe_sleep(1)
@@ -186,6 +209,7 @@ def daily_macro():
 
     safe_sleep(0.2)
     create_room() # move to create room
+    wait_for_pixels(pixel1=(1687, 453, 33, 152, 0))  # wait for start screen
     safe_sleep(0.2)
 
     start_room() # move to start
@@ -219,6 +243,7 @@ def aizen_setup():
 
     safe_sleep(0.2)
     create_room()  # move to create room
+    wait_for_pixels(pixel1=(1687, 453, 33, 152, 0))  # wait for start screen
     safe_sleep(0.2)
 
     start_room()  # move to start
@@ -242,7 +267,6 @@ def aizen_one_round():
 
     return found
 
-
 def aizen_100_macro():
     state_day, detect_count = load_count_state(AIZEN_STATE_FILE)
 
@@ -260,10 +284,15 @@ def aizen_100_macro():
         else:
             print("Aizen trait shard not found, restarting round")
 
-        direct_click(1351, 450, clicks=1)  # move to replay
+        direct_click(1351, 450, clicks=1)  # replay
         direct_click(1350, 450, clicks=1)
 
         safe_sleep(0.1)
+
+    direct_click(1483, 445, clicks=1)  # leave after reaching 100
+    direct_click(1482, 445, clicks=1)
+
+    safe_sleep(0.2)
 
     print("Aizen trait shard reached 100 today")
 
@@ -296,6 +325,7 @@ def shenron_setup():
 
     safe_sleep(0.2)
     create_room()  # move to create room
+    wait_for_pixels(pixel1=(1687, 453, 33, 152, 0))  # wait for start screen
     safe_sleep(0.2)
 
     start_room()  # move to start
@@ -342,7 +372,13 @@ def shenron_100_macro():
 
         direct_click(1351, 450, clicks=1)  # move to replay
         direct_click(1350, 450, clicks=1)
+
         safe_sleep(0.1)
+
+    direct_click(1483, 445, clicks=1)  # move to leave
+    direct_click(1482, 445, clicks=1)
+
+    safe_sleep(0.2)
 
     print("Shenron trait shard reached 100 today")
 
@@ -367,6 +403,7 @@ def griffith_setup():
 
     safe_sleep(0.2)
     create_room()  # move to create room
+    wait_for_pixels(pixel1=(1687, 453, 33, 152, 0)) # wait for start screen
     safe_sleep(0.2)
 
     start_room()  # move to start
@@ -410,7 +447,11 @@ def griffith_100_macro():
 
         direct_click(1298, 450, clicks=1)  # move to replay
         direct_click(1230, 450, clicks=1)
-        safe_sleep(0.1)
+        safe_sleep(0.2)
+
+    direct_click(1506, 450, clicks=1)  # move to leave
+    direct_click(1505, 450, clicks=1)
+    safe_sleep(0.1)
 
     print("Griffith trait shard reached 100 today")
 
@@ -419,13 +460,13 @@ def regular_challenge_setup():
     print("Regular challenge setup")
 
     safe_sleep(1)
-    open_type_selection()
+    open_type_selection() # room type selection
     safe_sleep(0.3)
 
-    open_challenge()
+    open_challenge() # open challenge
     safe_sleep(0.3)
 
-    direct_click(1270, 279, clicks=1)
+    direct_click(1270, 279, clicks=1) # move to regular challenge
     direct_click(1269, 279, clicks=1)
 
     safe_sleep(0.2)
@@ -440,15 +481,9 @@ def regular_challenge_one_round():
 
     safe_sleep(10)
 
-    wait_for_pixels(pixel1=(1351, 450, 132, 134, 0))
+    wait_for_pixels(pixel1=(1351, 450, 132, 134, 0)) # wait for victory screen
 
     safe_sleep(0.3)
-
-    direct_click(1351, 450, clicks=1)  # replay
-    direct_click(1350, 450, clicks=1)
-
-    safe_sleep(0.1)
-
 
 def thirty_min_macro():
     print("30 minute macro")
@@ -456,7 +491,7 @@ def thirty_min_macro():
 
     safe_sleep(5)
 
-    wait_for_pixels(pixel1=(1351, 450, 132, 134, 0))
+    wait_for_pixels(pixel1=(1351, 450, 132, 134, 0)) # wait for victory screen
 
     safe_sleep(0.3)
 
@@ -503,20 +538,38 @@ while True:
 
     regular_challenge_setup()
 
-    while get_today_text() == today_text:
+    while True:
         check_stop()
+
+        if get_today_text() != today_text:
+            leave_setup_to_home()
+            break
 
         regular_challenge_one_round()
 
-        now = datetime.now()
+        if get_today_text() != today_text:
+            thirty_min_macro()
+            break
 
+        now = datetime.now()
         current_slot = now.strftime("%Y-%m-%d %H:%M")
 
         if now.minute in (0, 30):
-
             if last_30_min_run != current_slot:
                 thirty_min_macro()
 
-                regular_challenge_setup()
+                if get_today_text() != today_text:
+                    break
 
+                regular_challenge_setup()
                 last_30_min_run = current_slot
+
+            else:
+                direct_click(1351, 450, clicks=1) # replay
+                direct_click(1350, 450, clicks=1)
+
+        else:
+            direct_click(1351, 450, clicks=1) # replay
+            direct_click(1350, 450, clicks=1)
+
+        safe_sleep(0.1)
