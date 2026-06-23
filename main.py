@@ -379,11 +379,6 @@ def griffith_one_round():
 
     safe_sleep(10)
 
-    wait_for_pixels(pixel1=(1639, 197, 248, 70, 71)) # pop up
-
-    direct_click(1639, 197, clicks=1)  # close pop up
-    direct_click(1638, 197, clicks=1)
-
     wait_for_pixels(pixel1=(1298, 451, 132, 134, 0))  # wait for victory screen
 
     safe_sleep(0.3)
